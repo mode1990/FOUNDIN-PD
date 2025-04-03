@@ -93,15 +93,32 @@ frag_file <- "/path/to/the/sample/atac_fragments.tsv.gz"
 chrom_assay <- CreateChromatinAssay(counts = atac_counts, sep = c(":", "-"), fragments = frag_file, min.cells = 10, annotation = annotations)
 pbmc_atac[["ATAC"]] <- chrom_assay
 
+#TSS and Nucleosome QC
+pbmc_atac <- NucleosomeSignal(pbmc_atac)
+pbmc_atac <- TSSEnrichment(pbmc_atac)
+
+#TSS and Nucleosome plot
+DensityScatter(pbmc_atac, x = 'nCount_ATAC', y = 'TSS.enrichment', log_x = TRUE, quantiles = TRUE)
+
 # Pre-QC plot
-VlnPlot(pbmc_atac, features = "nCount_ATAC", log = TRUE, pt.size = 0) + NoLegend()
-
+VlnPlot(
+  object = pbmc_atac,
+  features = c("nCount_RNA", "nCount_ATAC", "TSS.enrichment", "nucleosome_signal"),
+  ncol = 4,
+  pt.size = 0
+)
 # Filter cells based on QC metrics
-pbmc_atac <- subset(pbmc_atac, nCount_ATAC > 2000 & nCount_ATAC < 30000)
+pbmc_atac <- subset(pbmc_atac, subset = nCount_ATAC > 2000 & nCount_ATAC < 30000 & 
+    nucleosome_signal < 2 & TSS.enrichment > 1)
 
+pbmc
 # Post-QC plot
-VlnPlot(pbmc_atac, features = "nCount_ATAC", log = TRUE, pt.size = 0) + NoLegend()
-
+VlnPlot(
+  object = pbmc_atac,
+  features = c("nCount_RNA", "nCount_ATAC", "TSS.enrichment", "nucleosome_signal"),
+  ncol = 4,
+  pt.size = 0
+)
 # Save QC-ed ATAC object
 saveRDS(pbmc_atac, file = "/path/to/the/output/s#.rds")
 
