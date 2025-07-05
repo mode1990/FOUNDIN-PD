@@ -82,8 +82,3 @@ library(MOFA2)                   # Required for multi-omics integration
    - Factor visualization and interpretation
 
 
-
-
-## Contact
-
-For questions or issues, please open an issue on this repository or contact the author directly.
