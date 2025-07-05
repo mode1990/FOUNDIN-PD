@@ -81,40 +81,6 @@ library(MOFA2)                   # Required for multi-omics integration
    - MOFA2 model creation and training
    - Factor visualization and interpretation
 
-## Usage
-
-### Data Structure Requirements
-
-The pipeline expects data in the following format:
-- scRNA-seq data: 10X Genomics format
-- scATAC-seq data: 10X Genomics format with fragments file
-
-### Run Pipeline
-
-1. Update file paths in the script to match your data locations:
-   ```r
-   # Example path updates
-   rna_counts <- Read10X("/path/to/your/sample/filtered_feature_bc_matrix/")$`Gene Expression`
-   ```
-
-2. Run each section sequentially or use the full script for end-to-end analysis.
-
-3. Visualize results using the provided plotting functions:
-   ```r
-   DimPlot(pbmc_rna, group.by = "Sample")
-   FeaturePlot(pbmc_rna, features = c("TH", "MAP2"), label = TRUE)
-   ```
-
-## Example Results
-
-The pipeline generates various outputs including:
-- QC plots for both modalities
-- UMAP visualizations of cell clusters
-- Marker gene expression plots
-- Peak accessibility tracks
-- Motif enrichment plots
-- MOFA2 factor visualizations
-
 
 
 
